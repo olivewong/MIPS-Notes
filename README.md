@@ -45,13 +45,24 @@ If the conditional is true for two registers, then jump to the label C.
 | branch if equal to immediate | `beq $t, V, C` | `ori $at, $zero, V`<br />`beq $t, $at, C`|
 | branch if not equal to immediate | `bne $t, V, C` | `ori $at, $zero, V`<br />`bne $t, $at, C`|
 
+
+### Logical and Arithmetic Shifts ###
+
+The arithmetic shifts are signed, logical is unsigned. `sll` and `srl` pad the displaced bits with 0's, and `sra` pad the displaced bits with the most significant bits to retain the sign in two's complement notation. Note that logical shift left isn't necessary because it would be the same as arithmetic shift left.
+
+| Name                   | Syntax            | Operand                                                             | Sign                                                                                   |
+|------------------------|-------------------|---------------------------------------------------------------------|-------------------------------|
+| Shift Left Logical     | `sll $d, $s, shft`  |  Shifts `$s` left by `<shft>` bits;  <br/> 'Multiplies' value of `$s` by 2^shft | Unsigned                                                                                                     |
+| Shift Right Logical    | `srl $d, $s, shft`  |  Shifts `$s` left by `<shft>` bits;  <br/> 'Divides' value of `$s` by 2^shft    |  Unsigned                                                                              |
+| Shift Right Arithmetic | `sra $d, $s, $shft `|  Shifts `$s` left by `<shft>` bits; <br/>  'Divides' value of `$s` by 2^shft    |  Signed |
+
 ### Multiplication/Division ###
 
 | **Name** | **Assembly syntax** | **Expansion** | **Operation in C** |
 |:---------|:--------------------|:--------------|:-------------------|
-| multiplicate<br/>and return 32 bits | `mul $d, $s, $t`    | `mult $s, $t`<br />`mflo $d` | `d = (s * t) & 0xFFFFFFFF` |
-| quotient | `div $d, $s, $t`    | `div $s, $t`<br />`mflo $d` | `d = s / t`        |
-| remainder | `rem $d, $s, $t`    | `div $s, $t`<br />`mfhi $d` | `d = s % t`        |
+| Multiplication without overflow | `mul $d, $s, $t`    | `mult $s, $t`<br />`mflo $d` | `d = (s * t) `<br />`d = the product` |
+| Quotient | `div $d, $s, $t`    | `div $s, $t`<br />`mflo $d` | `d = s / t`<br />`d = the quotient`        |
+| Remainder | `rem $d, $s, $t`    | `div $s, $t`<br />`mfhi $d` | `d = s % t` <br />`d = the remainder`       |
 
 
 ### Directives ###
@@ -71,12 +82,6 @@ Directives go under .data. For the rest of the directives, see [this reference](
 | **Name** | **Assembly syntax** | **Expansion** | **Operation in C** |
 |:---------|:--------------------|:--------------|:-------------------|
 | jump register and link to ra | `jalr $s`        | `jalr $s, $ra` | `ra = PC + 4; goto s;` |
-
-### Logical operations ###
-
-| **Name** | **Assembly syntax** | **Expansion** | **Operation in C** |
-|:---------|:--------------------|:--------------|:-------------------|
-| not      | `not $t, $s`        | `nor $t, $s, $zero` | `t = ~s`           |
 
 ### No-operations ###
 
