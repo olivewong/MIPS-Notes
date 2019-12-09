@@ -20,6 +20,13 @@ Note that for the load instructions (beginning with l) the destination is the fi
 | Store word          | sw       | d, addr        | The contents of d is stored into addr (the addr must be word aligned)                                                                                                                     |   
 | Store byte          | sb       | d, addr        | The rightmost/least significant byte of d is stored in addr                                                                                                                               |   
       
+## Sizes
+
+| Type         | Size (bytes) | Size (bits) |
+|--------------|--------------|-------------|
+| 1 hex digit      | 1/2 byte     | 4 bits      |
+| 1 ASCII char | 1 byte       | 8 bits      |
+| 1 word       | 4 bytes      | 32 bits     |
 
 ## Branches
 
@@ -45,6 +52,19 @@ If the conditional is true for two registers, then jump to the label C.
 | multiplicate<br/>and return 32 bits | `mul $d, $s, $t`    | `mult $s, $t`<br />`mflo $d` | `d = (s * t) & 0xFFFFFFFF` |
 | quotient | `div $d, $s, $t`    | `div $s, $t`<br />`mflo $d` | `d = s / t`        |
 | remainder | `rem $d, $s, $t`    | `div $s, $t`<br />`mfhi $d` | `d = s % t`        |
+
+
+### Directives ###
+
+Directives go under .data. For the rest of the directives, see [this reference](http://students.cs.tamu.edu/tanzir/csce350/reference/assembler_dir.html).
+
+| Name    | Function              | Example              | Notes                                                              |
+|---------|-----------------------|----------------------|--------------------------------------------------------------------|
+| .space  | Reserves len bytes    | array: .space 20     | << would be enough to hold 20 bytes / 4 bytes for a word = 5 words |
+| .byte   | Saves a byte          | myByte: .byte 0x33   | Can only save one byte                                             |
+| .ascii  | Saves an ASCII string | str: .ascii "hello"  | Does not null terminate the string                                 |
+| .asciiz | Saves an ASCII string | str: .asciiz "hello" | Does null terminate the string
+
 
 ### Jumps ###
 
